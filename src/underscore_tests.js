@@ -32,30 +32,64 @@ var _ = { };
     if(n > array.length) {
       return array;
     }
-    
+
     return array.slice(array.length - n, array.length);
   };
 
   // Call iterator(value, key, collection) for each element of collection.
   // Accepts both arrays and objects.
   _.each = function(collection, iterator) {
+    if(Array.isArray(collection)) {
+      for(var i = 0; i < collection.length; i++) {
+        iterator(collection[i], i, collection);
+      }
+    } else if(typeof collection === "object") {
+      var keys = Object.keys(collection);
+      for(var i = 0; i < keys.length; i++) {
+        iterator(collection[keys[i]], keys[i], collection);
+      }
+    }
   };
 
   // Returns the index at which value can be found in the array, or -1 if value
   // is not present in the array.
   _.indexOf = function(array, target){
+    for(var i = 0; i < array.length; i++) {
+      if(array[i] === target) {
+        return i;
+      }
+    }
+    return -1;
   };
 
   // Return all elements of an array that pass a truth test ('iterator' function argument)
   _.filter = function(collection, iterator) {
+    for(var i = collection.length - 1; i >= 0; i--) {
+      if(!iterator(collection[i])) {
+        collection.splice(i, 1);
+      }
+    }
+    return collection;
   };
 
   // Return all elements of an array that don't pass a truth test (the 'iterator' function argument)
   _.reject = function(collection, iterator) {
+    for(var i = collection.length - 1; i >= 0; i--) {
+      if(iterator(collection[i])) {
+        collection.splice(i, 1);
+      }
+    }
+    return collection;
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+    for(var i = array.length - 1; i >= 0; i--) {
+      if(array.indexOf(array[i]) !== array.lastIndexOf(array[i])) {
+        array.splice(i, 1);
+      }
+    }
+    return array;
   };
 
 
