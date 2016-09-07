@@ -19,7 +19,7 @@ var _ = { };
     if(!n) {
       return array[0];
     }
-    
+
     return array.slice(0, n);
   };
 
@@ -95,16 +95,35 @@ var _ = { };
 
   // Return the results of applying an iterator to each element.
   _.map = function(array, iterator) {
+    for(var i = 0; i < array.length; i++) {
+      array[i] = iterator(array[i]);
+    }
+    return array;
   };
 
   // Takes an array of objects and returns and array of the values of
   // a certain property in it. E.g. take an array of people and return
   // an array of just their ages
   _.pluck = function(array, propertyName) {
+    var resultArray = [];
+    for(var i = 0; i < array.length; i++) {
+      if(propertyName in array[i]) {
+        resultArray[resultArray.length] = array[i][propertyName];
+      }
+    }
+    return resultArray;
   };
 
   // Calls the method named by methodName on each value in the list.
   _.invoke = function(list, methodName, args) {
+
+    if(methodName && typeof methodName === "string") {
+      for(var i = 0; i < list.length; i++) {
+        list[i][methodName]();
+      }
+    }
+
+    return list;
   };
 
   // Reduces an array or object to a single value by repetitively calling
