@@ -149,11 +149,62 @@ var _ = { };
 
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function(collection, target) {
+    if(collection && Array.isArray(collection)) {
+      for(var i = 0; i < collection.length; i++) {
+        if(collection[i] === target) {
+          return true;
+        }
+      }
+    } else if(collection && typeof collection === "object") {
+      for(var prop in collection) {
+          var value  = collection[prop];
+          if(value === target) {
+            return true;
+          }
+      }
+    }
+    return false;
   };
 
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
+    // Test for undefined collection
+    if(!collection) {
+      return false;
+    }
+
+    // Test for empty set
+    if(collection.length === 0) {
+      return true;
+    }
+
+    for(var i = 0; i < collection.length; i++) {
+
+      var item = collection[i];
+
+      // Cast to boolean
+      if(collection.length === 1) {
+        return !!item;
+      }
+
+      // Test for undefined
+      if(!item && item != 0) {
+        return false;
+      }
+
+      // Test for boolean (all true)
+      if(typeof item === "boolean") {
+        if(!item) {
+          return false;
+        }
+      // Test for even/odd
+      } else if(item % 2 !== 0) {
+        return false;
+      }
+    }
+
+    return true;
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
