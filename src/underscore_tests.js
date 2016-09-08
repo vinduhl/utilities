@@ -133,6 +133,18 @@ var _ = { };
   // iterator(previousValue, item) for each item. previousValue should be
   // the return value of the previous iterator call.
   _.reduce = function(collection, iterator, initialValue) {
+    var previousValue = 0;
+    if(initialValue) {
+      previousValue = initialValue;
+    }
+
+    if(collection) {
+      for(var i = 0; i < collection.length; i++) {
+        previousValue = iterator(previousValue, collection[i]);
+      }
+    }
+
+    return previousValue;
   };
 
   // Determine if the array or object contains a given value (using `===`).
